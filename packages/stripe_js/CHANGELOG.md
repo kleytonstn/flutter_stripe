@@ -1,3 +1,42 @@
+## 6.3.0
+**Features**
+- Add P24 support on Stripe web
+
+**Fixes**
+- Compliance with latest Dart analyzer
+- Prevent focus loop in Payment element for the web
+
+## 6.2.1
+**Features**
+- Add support for any kind of payment method in setup intent with [confirmSetup]
+
+## 6.2.0
+**Features**
+- Add basic support for Expresscheckout on the web
+
+**Fixes** 
+- Export elementappearance and element theme
+
+## 6.1.1
+
+- **FIX**: The platformPayCreatePaymentMethod method results in an error on web (#1879).
+
+## 6.1.0
+- Sync with Stripe [0.38.6](https://github.com/stripe/stripe-react-native/releases/tag/v0.38.6). 
+- Minor fixes and improvements.
+- Fix webelement parameters.
+
+## 6.0.0
+
+ - **FIX**: invalid argument `requires_capture` on web (#1431).
+ - **FIX**: PaymentConfirmationRedirect enum value (#1221).
+ - **FIX**: confirmation redirect and stripeAccountId (#1201).
+ - **FEAT**: release versions (#1283).
+ - **FEAT**: web fixes and features (#1270).
+ - **FEAT**: release 9.2.1 (#1262).
+ - **FEAT**: tokens for web (#1079).
+ - **FEAT**: stripe js (#1052).
+
 ## 3.4.0
 **Features**
 - #1122 Add google pay and apple pay for web

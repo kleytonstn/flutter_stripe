@@ -1,7 +1,6 @@
 //@dart=2.12
 import 'dart:async';
 import 'dart:developer' as dev;
-import 'dart:html';
 import 'dart:ui' as ui;
 
 import 'package:flutter/widgets.dart';
@@ -10,6 +9,7 @@ import 'package:flutter_stripe_web/platform_pay_button.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:stripe_js/stripe_api.dart' as stripe_js;
 import 'package:stripe_js/stripe_js.dart' as stripe_js;
+import 'package:web/web.dart' as web;
 
 import 'parser/payment_intent.dart';
 import 'parser/payment_methods.dart';
@@ -43,7 +43,7 @@ class WebStripe extends StripePlatform {
 
   String? _urlScheme;
 
-  String get urlScheme => _urlScheme ?? window.location.href;
+  String get urlScheme => _urlScheme ?? web.window.location.href;
 
   @override
   Future<void> initialise({
@@ -54,14 +54,22 @@ class WebStripe extends StripePlatform {
     String? urlScheme,
     bool? setReturnUrlSchemeOnAndroid,
   }) async {
-    this._urlScheme = urlScheme;
+    _urlScheme = urlScheme;
+
     if (__stripe != null) {
-      __stripe!.stripeAccount = stripeAccountId;
+      // Check if the new stripeAccountId is different
+      if (__stripe!.stripeAccount != stripeAccountId) {
+        // Re-initialize with new stripeAccountId
+        await stripe_js.loadStripe();
+        var stripeOption = stripe_js.StripeOptions();
+        stripeOption.stripeAccount = stripeAccountId;
+        __stripe = stripe_js.Stripe(publishableKey, stripeOption);
+      }
       return;
     }
 
     await stripe_js.loadStripe();
-    final stripeOption = stripe_js.StripeOptions();
+    var stripeOption = stripe_js.StripeOptions();
     if (stripeAccountId != null) {
       stripeOption.stripeAccount = stripeAccountId;
     }
@@ -97,7 +105,6 @@ class WebStripe extends StripePlatform {
       if (response.error != null) {
         throw response.error!;
       }
-      print(response);
       return response.paymentMethod!.parse();
     } catch (e) {
       dev.log('Error $e');
@@ -153,18 +160,30 @@ class WebStripe extends StripePlatform {
         return js.confirmAlipayPayment(
           paymentIntentClientSecret,
           data: stripe_js.ConfirmAlipayPaymentData(
-            returnUrl: window.location.href,
+            returnUrl: web.window.location.href,
           ),
         );
       },
       ideal: (paymentData) {
-        if (paymentData.bankName == null) throw 'bankName is required for web';
-        // https://stripe.com/docs/js/payment_intents/confirm_alipay_payment#stripe_confirm_alipay_payment-options
+        // https://stripe.com/docs/js/payment_intents/confirm_ideal_payment#stripe_confirm_ideal_payment-self_collected
         return js.confirmIdealPayment(
           paymentIntentClientSecret,
           data: stripe_js.ConfirmIdealPaymentData(
             paymentMethod: stripe_js.IdealPaymentMethodDetails.withBank(
-              ideal: stripe_js.IdealBankData(bank: paymentData.bankName!),
+              ideal: stripe_js.IdealBankData(bank: paymentData.bankName),
+            ),
+            returnUrl: urlScheme,
+            // recommended
+            // setup_future_usage:
+          ),
+        );
+      },
+      p24: (paymentData) {
+        return js.confirmP24Payment(
+          paymentIntentClientSecret,
+          data: stripe_js.ConfirmP24PaymentData(
+            paymentMethod: stripe_js.P24PaymentMethodDetails(
+              billingDetails: paymentData.billingDetails!.toJs(),
             ),
             returnUrl: urlScheme,
             // recommended
@@ -189,13 +208,12 @@ class WebStripe extends StripePlatform {
   Future<PaymentIntent> confirmIdealPayment(
       String paymentIntentClientSecret, PaymentMethodDataIdeal paymentData,
       {String? returnUrl}) async {
-    if (paymentData.bankName == null) throw 'bankName is required for web';
-    // https://stripe.com/docs/js/payment_intents/confirm_alipay_payment#stripe_confirm_alipay_payment-options
+    // https://stripe.com/docs/js/payment_intents/confirm_ideal_payment#stripe_confirm_ideal_payment-self_collected
     final response = await js.confirmIdealPayment(
       paymentIntentClientSecret,
       data: stripe_js.ConfirmIdealPaymentData(
         paymentMethod: stripe_js.IdealPaymentMethodDetails.withBank(
-          ideal: stripe_js.IdealBankData(bank: paymentData.bankName!),
+          ideal: stripe_js.IdealBankData(bank: paymentData.bankName),
         ),
         returnUrl: returnUrl ?? urlScheme,
       ),
@@ -401,6 +419,23 @@ class WebStripe extends StripePlatform {
     }
   }
 
+  Future<void> confirmSetupElement(
+    ConfirmSetupElementOptions options,
+  ) async {
+    final response = await js.confirmSetup(
+      stripe_js.ConfirmSetupOptions(
+        elements: elements!,
+        confirmParams: options.confirmParams,
+        redirect: options.redirect,
+      ),
+    );
+    if (response.error != null) {
+      throw response.error!;
+    } else {
+      return;
+    }
+  }
+
   @override
   Widget buildCard({
     Key? key,
@@ -474,14 +509,19 @@ class WebStripe extends StripePlatform {
   }
 
   @override
-  Future<FinancialConnectionTokenResult> collectBankAccountToken(
-      {required String clientSecret}) {
+  Future<FinancialConnectionTokenResult> collectBankAccountToken({
+    required String clientSecret,
+    CollectBankAccountTokenParams? params,
+  }) {
     throw WebUnsupportedError.method('collectBankAccountToken');
   }
 
   @override
-  Future<FinancialConnectionSessionResult> collectFinancialConnectionsAccounts(
-      {required String clientSecret}) {
+  Future<FinancialConnectionSessionResult> collectFinancialConnectionsAccounts({
+    required String clientSecret,
+    CollectFinancialConnectionsAccountsParams? params =
+        const CollectFinancialConnectionsAccountsParams(),
+  }) {
     throw WebUnsupportedError.method('collectFinancialConnectionsAccounts');
   }
 
@@ -527,7 +567,7 @@ class WebStripe extends StripePlatform {
     required PlatformPayPaymentMethodParams params,
     bool usesDeprecatedTokenFlow = false,
   }) {
-    if (!(params is PlatformPayPaymentMethodParamsWeb)) {
+    if (params is! PlatformPayPaymentMethodParamsWeb) {
       throw WebUnsupportedError(
           "platformPayCreatePaymentMethod - ${params.runtimeType} is not supported on web");
     }
@@ -633,7 +673,7 @@ class WebUnsupportedError extends Error implements UnsupportedError {
 }
 
 extension CanMakePayment on stripe_js.PaymentRequest {
-  Future<bool> get isPaymentAvailable => this.canMakePayment().then((value) =>
+  Future<bool> get isPaymentAvailable => canMakePayment().then((value) =>
       value?.applePay == true ||
       value?.googlePay == true ||
       value?.link == true);

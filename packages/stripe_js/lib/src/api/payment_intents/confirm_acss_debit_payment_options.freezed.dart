@@ -12,7 +12,7 @@ part of 'confirm_acss_debit_payment_options.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ConfirmAcssDebitPaymentOptions _$ConfirmAcssDebitPaymentOptionsFromJson(
     Map<String, dynamic> json) {
@@ -24,8 +24,12 @@ mixin _$ConfirmAcssDebitPaymentOptions {
   /// Set this to true if you want to skip displaying the mandate confirmation.
   bool? get skipMandate => throw _privateConstructorUsedError;
 
+  /// Serializes this ConfirmAcssDebitPaymentOptions to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ConfirmAcssDebitPaymentOptions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConfirmAcssDebitPaymentOptionsCopyWith<ConfirmAcssDebitPaymentOptions>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$ConfirmAcssDebitPaymentOptionsCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConfirmAcssDebitPaymentOptions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -88,6 +94,8 @@ class __$$ConfirmAcssDebitPaymentOptionsImplCopyWithImpl<$Res>
       $Res Function(_$ConfirmAcssDebitPaymentOptionsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConfirmAcssDebitPaymentOptions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -123,7 +131,7 @@ class _$ConfirmAcssDebitPaymentOptionsImpl
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConfirmAcssDebitPaymentOptionsImpl &&
@@ -131,11 +139,13 @@ class _$ConfirmAcssDebitPaymentOptionsImpl
                 other.skipMandate == skipMandate));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, skipMandate);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConfirmAcssDebitPaymentOptions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConfirmAcssDebitPaymentOptionsImplCopyWith<
@@ -159,12 +169,14 @@ abstract class _ConfirmAcssDebitPaymentOptions
   factory _ConfirmAcssDebitPaymentOptions.fromJson(Map<String, dynamic> json) =
       _$ConfirmAcssDebitPaymentOptionsImpl.fromJson;
 
-  @override
-
   /// Set this to true if you want to skip displaying the mandate confirmation.
-  bool? get skipMandate;
   @override
-  @JsonKey(ignore: true)
+  bool? get skipMandate;
+
+  /// Create a copy of ConfirmAcssDebitPaymentOptions
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConfirmAcssDebitPaymentOptionsImplCopyWith<
           _$ConfirmAcssDebitPaymentOptionsImpl>
       get copyWith => throw _privateConstructorUsedError;

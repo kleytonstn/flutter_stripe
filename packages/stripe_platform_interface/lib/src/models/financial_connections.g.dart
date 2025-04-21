@@ -68,7 +68,7 @@ _$FinancialConnectionBankAccountTokenImpl
           livemode: json['livemode'] as bool,
           id: json['id'] as String?,
           used: json['used'] as bool,
-          created: json['created'] as int?,
+          created: (json['created'] as num?)?.toInt(),
         );
 
 Map<String, dynamic> _$$FinancialConnectionBankAccountTokenImplToJson(
@@ -90,7 +90,7 @@ _$FinancialConnectionAccountImpl _$$FinancialConnectionAccountImplFromJson(
       status: $enumDecode(_$AccountStatusEnumMap, json['status']),
       institutionName: json['institutionName'] as String,
       last4: json['last4'] as String?,
-      created: json['created'] as int,
+      created: (json['created'] as num).toInt(),
       balance: json['balance'] == null
           ? null
           : AccountBalance.fromJson(json['balance'] as Map<String, dynamic>),
@@ -171,7 +171,7 @@ const _$FinancialConnectionsPaymentMethodTypeEnumMap = {
 _$BalanceRefreshImpl _$$BalanceRefreshImplFromJson(Map<String, dynamic> json) =>
     _$BalanceRefreshImpl(
       status: $enumDecode(_$BalanceRefreshStatusEnumMap, json['status']),
-      lastAttemptedAt: json['lastAttemptedAt'] as int,
+      lastAttemptedAt: (json['lastAttemptedAt'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$BalanceRefreshImplToJson(
@@ -189,16 +189,16 @@ const _$BalanceRefreshStatusEnumMap = {
 
 _$AccountBalanceImpl _$$AccountBalanceImplFromJson(Map<String, dynamic> json) =>
     _$AccountBalanceImpl(
-      asOf: json['asOf'] as int,
+      asOf: (json['asOf'] as num).toInt(),
       type: $enumDecode(_$BalanceTypeEnumMap, json['type']),
       cash: (json['cash'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, e as int),
+        (k, e) => MapEntry(k, (e as num).toInt()),
       ),
       credit: (json['credit'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, e as int),
+        (k, e) => MapEntry(k, (e as num).toInt()),
       ),
       current: (json['current'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, e as int),
+        (k, e) => MapEntry(k, (e as num).toInt()),
       ),
     );
 
@@ -215,4 +215,95 @@ Map<String, dynamic> _$$AccountBalanceImplToJson(
 const _$BalanceTypeEnumMap = {
   BalanceType.cash: 'cash',
   BalanceType.credit: 'credit',
+};
+
+_$CollectFinancialConnectionsAccountsParamsImpl
+    _$$CollectFinancialConnectionsAccountsParamsImplFromJson(
+            Map<String, dynamic> json) =>
+        _$CollectFinancialConnectionsAccountsParamsImpl(
+          style:
+              $enumDecodeNullable(_$UserInterfaceStyleEnumMap, json['style']),
+        );
+
+Map<String, dynamic> _$$CollectFinancialConnectionsAccountsParamsImplToJson(
+        _$CollectFinancialConnectionsAccountsParamsImpl instance) =>
+    <String, dynamic>{
+      'style': _$UserInterfaceStyleEnumMap[instance.style],
+    };
+
+const _$UserInterfaceStyleEnumMap = {
+  UserInterfaceStyle.alwaysLight: 'alwaysLight',
+  UserInterfaceStyle.alwaysDark: 'alwaysDark',
+  UserInterfaceStyle.automatic: 'automatic',
+};
+
+_$FinancialConnectionsEventImpl _$$FinancialConnectionsEventImplFromJson(
+        Map<String, dynamic> json) =>
+    _$FinancialConnectionsEventImpl(
+      name: $enumDecode(_$FinancialConnectionsEventNameEnumMap, json['name']),
+      metadata: FinancialConnectionsEventMetadata.fromJson(
+          json['metadata'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$FinancialConnectionsEventImplToJson(
+        _$FinancialConnectionsEventImpl instance) =>
+    <String, dynamic>{
+      'name': _$FinancialConnectionsEventNameEnumMap[instance.name]!,
+      'metadata': instance.metadata.toJson(),
+    };
+
+const _$FinancialConnectionsEventNameEnumMap = {
+  FinancialConnectionsEventName.open: 'open',
+  FinancialConnectionsEventName.manual_entry_initiated:
+      'manual_entry_initiated',
+  FinancialConnectionsEventName.consent_acquired: 'consent_acquired',
+  FinancialConnectionsEventName.search_initiated: 'search_initiated',
+  FinancialConnectionsEventName.institution_selected: 'institution_selected',
+  FinancialConnectionsEventName.institution_authorized:
+      'institution_authorized',
+  FinancialConnectionsEventName.accounts_selected: 'accounts_selected',
+  FinancialConnectionsEventName.success: 'success',
+  FinancialConnectionsEventName.error: 'error',
+  FinancialConnectionsEventName.cancel: 'cancel',
+  FinancialConnectionsEventName.flow_launched_in_browser:
+      'flow_launched_in_browser',
+};
+
+_$FinancialConnectionsEventMetadataImpl
+    _$$FinancialConnectionsEventMetadataImplFromJson(
+            Map<String, dynamic> json) =>
+        _$FinancialConnectionsEventMetadataImpl(
+          manualEntry: json['manualEntry'] as bool?,
+          institutionName: json['institutionName'] as String?,
+          errorCode: $enumDecodeNullable(
+              _$FinancialConnectionsEventErrorCodeEnumMap, json['errorCode']),
+        );
+
+Map<String, dynamic> _$$FinancialConnectionsEventMetadataImplToJson(
+        _$FinancialConnectionsEventMetadataImpl instance) =>
+    <String, dynamic>{
+      'manualEntry': instance.manualEntry,
+      'institutionName': instance.institutionName,
+      'errorCode':
+          _$FinancialConnectionsEventErrorCodeEnumMap[instance.errorCode],
+    };
+
+const _$FinancialConnectionsEventErrorCodeEnumMap = {
+  FinancialConnectionsEventErrorCode.account_numbers_unavailable:
+      'account_numbers_unavailable',
+  FinancialConnectionsEventErrorCode.accounts_unavailable:
+      'accounts_unavailable',
+  FinancialConnectionsEventErrorCode.no_debitable_account:
+      'no_debitable_account',
+  FinancialConnectionsEventErrorCode.authorization_failed:
+      'authorization_failed',
+  FinancialConnectionsEventErrorCode.institution_unavailable_planned:
+      'institution_unavailable_planned',
+  FinancialConnectionsEventErrorCode.institution_unavailable_unplanned:
+      'institution_unavailable_unplanned',
+  FinancialConnectionsEventErrorCode.institution_timeout: 'institution_timeout',
+  FinancialConnectionsEventErrorCode.unexpected_error: 'unexpected_error',
+  FinancialConnectionsEventErrorCode.session_expired: 'session_expired',
+  FinancialConnectionsEventErrorCode.failed_bot_detection:
+      'failed_bot_detection',
 };

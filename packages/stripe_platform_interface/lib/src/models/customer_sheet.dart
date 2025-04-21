@@ -32,6 +32,11 @@ class CustomerSheetInitParams with _$CustomerSheetInitParams {
     /// Your customer-facing business name. The default value is the name of your app.
     String? merchantDisplayName,
 
+    ///This is an experimental feature that may be removed at any time.
+    /// Defaults to true. If true, the customer can delete all saved payment methods.
+    /// If false, the customer can't delete if they only have one saved payment method remaining.
+    bool? allowsRemovalOfLastSavedPaymentMethod,
+
     /// Optional configuration for setting the header text of the Payment Method selection screen
     String? headerTextForSelectionScreen,
 
@@ -57,6 +62,13 @@ class CustomerSheetInitParams with _$CustomerSheetInitParams {
     /// The list of preferred networks that should be used to process payments made with a co-branded card.
     /// This value will only be used if your user hasn't selected a network themselves.
     @JsonKey(toJson: _cardBrandListToJson) List<CardBrand>? preferredNetworks,
+
+    /// By default, PaymentSheet will accept all supported cards by Stripe.
+    /// You can specify card brands PaymentSheet should block or allow payment for by providing an array of those card brands.
+    ///
+    /// Note: This is only a client-side solution.
+    ///Note: Card brand filtering is not currently supported in Link.
+    CardBrandAcceptance? cardBrandAcceptance,
   }) = _CustomerSheetInitParams;
 
   factory CustomerSheetInitParams.fromJson(Map<String, dynamic> json) =>

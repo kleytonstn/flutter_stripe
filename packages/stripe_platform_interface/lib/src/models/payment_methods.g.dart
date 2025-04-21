@@ -95,8 +95,8 @@ Map<String, dynamic> _$$BacsDebitImplToJson(_$BacsDebitImpl instance) =>
 _$CardImpl _$$CardImplFromJson(Map<String, dynamic> json) => _$CardImpl(
       brand: json['brand'] as String?,
       country: json['country'] as String?,
-      expYear: json['expYear'] as int?,
-      expMonth: json['expMonth'] as int?,
+      expYear: (json['expYear'] as num?)?.toInt(),
+      expMonth: (json['expMonth'] as num?)?.toInt(),
       funding: json['funding'] as String?,
       last4: json['last4'] as String?,
       preferredNetwork: json['preferredNetwork'] as String?,
@@ -180,15 +180,14 @@ _$UsBankAccountImpl _$$UsBankAccountImplFromJson(Map<String, dynamic> json) =>
     _$UsBankAccountImpl(
       routingNumber: json['routingNumber'] as String?,
       last4: json['last4'] as String?,
-      accountHolderType: $enumDecode(
+      accountHolderType: $enumDecodeNullable(
           _$BankAccountHolderTypeEnumMap, json['accountHolderType']),
-      accountType: $enumDecode(_$UsBankAccountTypeEnumMap, json['accountType']),
+      accountType:
+          $enumDecodeNullable(_$UsBankAccountTypeEnumMap, json['accountType']),
       bankName: json['bankName'] as String?,
       fingerprint: json['fingerprint'] as String?,
       linkedAccount: json['linkedAccount'] as String?,
-      preferredNetworks: (json['preferredNetworks'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      preferredNetwork: json['preferredNetwork'] as String?,
       supportedNetworks: (json['supportedNetworks'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -199,12 +198,12 @@ Map<String, dynamic> _$$UsBankAccountImplToJson(_$UsBankAccountImpl instance) =>
       'routingNumber': instance.routingNumber,
       'last4': instance.last4,
       'accountHolderType':
-          _$BankAccountHolderTypeEnumMap[instance.accountHolderType]!,
-      'accountType': _$UsBankAccountTypeEnumMap[instance.accountType]!,
+          _$BankAccountHolderTypeEnumMap[instance.accountHolderType],
+      'accountType': _$UsBankAccountTypeEnumMap[instance.accountType],
       'bankName': instance.bankName,
       'fingerprint': instance.fingerprint,
       'linkedAccount': instance.linkedAccount,
-      'preferredNetworks': instance.preferredNetworks,
+      'preferredNetwork': instance.preferredNetwork,
       'supportedNetworks': instance.supportedNetworks,
     };
 
@@ -568,6 +567,9 @@ _$PaymentMethodDataImpl _$$PaymentMethodDataImplFromJson(
       mandateData: json['mandateData'] == null
           ? null
           : MandateData.fromJson(json['mandateData'] as Map<String, dynamic>),
+      metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$PaymentMethodDataImplToJson(
@@ -576,6 +578,7 @@ Map<String, dynamic> _$$PaymentMethodDataImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataCardFromTokenImpl
@@ -594,6 +597,9 @@ _$PaymentMethodDataCardFromTokenImpl
               ? null
               : MandateData.fromJson(
                   json['mandateData'] as Map<String, dynamic>),
+          metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, e as String),
+          ),
         );
 
 Map<String, dynamic> _$$PaymentMethodDataCardFromTokenImplToJson(
@@ -603,6 +609,7 @@ Map<String, dynamic> _$$PaymentMethodDataCardFromTokenImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataCardFromMethodImpl
@@ -622,6 +629,9 @@ _$PaymentMethodDataCardFromMethodImpl
               ? null
               : MandateData.fromJson(
                   json['mandateData'] as Map<String, dynamic>),
+          metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, e as String),
+          ),
         );
 
 Map<String, dynamic> _$$PaymentMethodDataCardFromMethodImplToJson(
@@ -632,6 +642,7 @@ Map<String, dynamic> _$$PaymentMethodDataCardFromMethodImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataIdealImpl _$$PaymentMethodDataIdealImplFromJson(
@@ -650,6 +661,9 @@ _$PaymentMethodDataIdealImpl _$$PaymentMethodDataIdealImplFromJson(
       mandateData: json['mandateData'] == null
           ? null
           : MandateData.fromJson(json['mandateData'] as Map<String, dynamic>),
+      metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$PaymentMethodDataIdealImplToJson(
@@ -660,6 +674,7 @@ Map<String, dynamic> _$$PaymentMethodDataIdealImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataAubecsImpl _$$PaymentMethodDataAubecsImplFromJson(
@@ -678,6 +693,9 @@ _$PaymentMethodDataAubecsImpl _$$PaymentMethodDataAubecsImplFromJson(
       mandateData: json['mandateData'] == null
           ? null
           : MandateData.fromJson(json['mandateData'] as Map<String, dynamic>),
+      metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$PaymentMethodDataAubecsImplToJson(
@@ -687,6 +705,7 @@ Map<String, dynamic> _$$PaymentMethodDataAubecsImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataFpxImpl _$$PaymentMethodDataFpxImplFromJson(
@@ -704,6 +723,9 @@ _$PaymentMethodDataFpxImpl _$$PaymentMethodDataFpxImplFromJson(
       mandateData: json['mandateData'] == null
           ? null
           : MandateData.fromJson(json['mandateData'] as Map<String, dynamic>),
+      metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$PaymentMethodDataFpxImplToJson(
@@ -713,6 +735,7 @@ Map<String, dynamic> _$$PaymentMethodDataFpxImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataSofortImpl _$$PaymentMethodDataSofortImplFromJson(
@@ -730,6 +753,9 @@ _$PaymentMethodDataSofortImpl _$$PaymentMethodDataSofortImplFromJson(
       mandateData: json['mandateData'] == null
           ? null
           : MandateData.fromJson(json['mandateData'] as Map<String, dynamic>),
+      metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$PaymentMethodDataSofortImplToJson(
@@ -739,6 +765,7 @@ Map<String, dynamic> _$$PaymentMethodDataSofortImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataSepaImpl _$$PaymentMethodDataSepaImplFromJson(
@@ -756,6 +783,9 @@ _$PaymentMethodDataSepaImpl _$$PaymentMethodDataSepaImplFromJson(
       mandateData: json['mandateData'] == null
           ? null
           : MandateData.fromJson(json['mandateData'] as Map<String, dynamic>),
+      metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$PaymentMethodDataSepaImplToJson(
@@ -765,6 +795,7 @@ Map<String, dynamic> _$$PaymentMethodDataSepaImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataAfterPayImpl _$$PaymentMethodDataAfterPayImplFromJson(
@@ -779,6 +810,9 @@ _$PaymentMethodDataAfterPayImpl _$$PaymentMethodDataAfterPayImplFromJson(
       mandateData: json['mandateData'] == null
           ? null
           : MandateData.fromJson(json['mandateData'] as Map<String, dynamic>),
+      metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$PaymentMethodDataAfterPayImplToJson(
@@ -787,13 +821,14 @@ Map<String, dynamic> _$$PaymentMethodDataAfterPayImplToJson(
       'billingDetails': instance.billingDetails.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodDataUsBankImpl _$$PaymentMethodDataUsBankImplFromJson(
         Map<String, dynamic> json) =>
     _$PaymentMethodDataUsBankImpl(
-      accountNumber: json['accountNumber'] as String?,
-      routingNumber: json['routingNumber'] as String?,
+      accountNumber: json['accountNumber'] as String,
+      routingNumber: json['routingNumber'] as String,
       accountHolderType: $enumDecodeNullable(
           _$BankAccountHolderTypeEnumMap, json['accountHolderType']),
       accountType:
@@ -809,6 +844,9 @@ _$PaymentMethodDataUsBankImpl _$$PaymentMethodDataUsBankImplFromJson(
       mandateData: json['mandateData'] == null
           ? null
           : MandateData.fromJson(json['mandateData'] as Map<String, dynamic>),
+      metadata: (json['metadata'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
     );
 
 Map<String, dynamic> _$$PaymentMethodDataUsBankImplToJson(
@@ -822,6 +860,7 @@ Map<String, dynamic> _$$PaymentMethodDataUsBankImplToJson(
       'billingDetails': instance.billingDetails?.toJson(),
       'shippingDetails': instance.shippingDetails?.toJson(),
       'mandateData': instance.mandateData?.toJson(),
+      'metadata': instance.metadata,
     };
 
 _$PaymentMethodOptionsImpl _$$PaymentMethodOptionsImplFromJson(

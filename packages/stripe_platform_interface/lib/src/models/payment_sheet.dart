@@ -32,6 +32,10 @@ class SetupPaymentSheetParameters with _$SetupPaymentSheetParameters {
     ///A temp key can be used for API operations that require a secret key.
     String? customerEphemeralKeySecret,
 
+    /// (Experimental) This parameter can be changed or removed at any time (use at your own risk).
+    /// The client secret of this Customer Session. Used on the client to set up secure access to the given customer.
+    String? customerSessionClientSecret,
+
     /// Secret used for client-side retrieval using a publishable key.
     ///
     /// If this value is null make sure to add a [setupIntentClientSecret]
@@ -81,6 +85,18 @@ class SetupPaymentSheetParameters with _$SetupPaymentSheetParameters {
     /// paymentIntent since the customer can change those.
     @JsonKey(name: 'defaultBillingDetails') BillingDetails? billingDetails,
 
+    ///This is an experimental feature that may be removed at any time.
+    /// Defaults to true. If true, the customer can delete all saved payment methods.
+    /// If false, the customer can't delete if they only have one saved payment method remaining.
+    bool? allowsRemovalOfLastSavedPaymentMethod,
+
+    /// By default, PaymentSheet will use a dynamic ordering that optimizes payment method display for the customer.
+    /// You can override the default order in which payment methods are displayed in PaymentSheet with a list of payment method types.
+    /// See https://stripe.com/docs/api/payment_methods/object#payment_method_object-type for the list of valid types.  You may also pass external payment methods.
+    /// Example: ["card", "external_paypal", "klarna"]
+    /// If you omit payment methods from this list, they’ll be automatically ordered by Stripe after the ones you provide. Invalid payment methods are ignored.
+    List<String>? paymentMethodOrder,
+
     /// Return URL is required for IDEAL, Klarna and few other payment methods
     String? returnURL,
 
@@ -94,6 +110,13 @@ class SetupPaymentSheetParameters with _$SetupPaymentSheetParameters {
     /// The list of preferred networks that should be used to process payments made with a co-branded card.
     /// This value will only be used if your user hasn't selected a network themselves.
     @JsonKey(toJson: _cardBrandListToJson) List<CardBrand>? preferredNetworks,
+
+    /// By default, PaymentSheet will accept all supported cards by Stripe.
+    /// You can specify card brands PaymentSheet should block or allow payment for by providing an array of those card brands.
+    ///
+    /// Note: This is only a client-side solution.
+    ///Note: Card brand filtering is not currently supported in Link.
+    CardBrandAcceptance? cardBrandAcceptance,
   }) = _SetupParameters;
 
   factory SetupPaymentSheetParameters.fromJson(Map<String, dynamic> json) =>
@@ -125,9 +148,9 @@ class IntentConfiguration with _$IntentConfiguration {
 }
 
 @freezed
-class IntentMode with _$IntentMode {
-  @JsonSerializable(explicitToJson: true)
-  const factory IntentMode({
+sealed class IntentMode with _$IntentMode {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory IntentMode.paymentMode({
     required String currencyCode,
     required int amount,
 
@@ -136,7 +159,15 @@ class IntentMode with _$IntentMode {
 
     /// Capture method for the future payment intent
     CaptureMethod? captureMethod,
-  }) = _IntentMode;
+  }) = _PaymentMode;
+
+  @JsonSerializable(explicitToJson: true)
+  const factory IntentMode.setupMode({
+    String? currencyCode,
+
+    /// Data related to the future payment intent
+    required IntentFutureUsage setupFutureUsage,
+  }) = _SetupMode;
 
   factory IntentMode.fromJson(Map<String, dynamic> json) =>
       _$IntentModeFromJson(json);
@@ -193,8 +224,11 @@ class PaymentSheetGooglePay with _$PaymentSheetGooglePay {
     String? amount,
 
     /// The Google Pay button type to use. Set to "Pay" by default.
+    @JsonKey(toJson: PaymentSheetGooglePay.platformButtonTypeToJson)
     PlatformButtonType? buttonType,
   }) = _PaymentSheetGooglePay;
+
+  static int? platformButtonTypeToJson(PlatformButtonType? type) => type?.id;
 
   factory PaymentSheetGooglePay.fromJson(Map<String, dynamic> json) =>
       _$PaymentSheetGooglePayFromJson(json);
@@ -554,4 +588,62 @@ List<int> _cardBrandListToJson(List<CardBrand>? list) {
     return [];
   }
   return list.map((e) => e.brandValue).toList();
+}
+
+/// Card brand categories that can be allowed or disallowed
+enum CardBrandCategory {
+  /// Visa branded cards
+  visa,
+
+  /// Mastercard branded cards
+  mastercard,
+
+  /// American Express branded cards
+  amex,
+
+  /// Discover branded cards
+  /// Note: Encompasses all of Discover Global Network (Discover, Diners, JCB, UnionPay, Elo)
+  discover,
+}
+
+///Filter types for card brand acceptance
+enum CardBrandAcceptanceFilter {
+  /// Accept all card brands supported by Stripe
+  all,
+
+  /// Accept only the specified card brands
+  allowed,
+
+  /// Accept all card brands except the specified ones
+  disallowed,
+}
+
+@freezed
+
+/// Options to block certain card brands on the client
+class CardBrandAcceptance with _$CardBrandAcceptance {
+  const factory CardBrandAcceptance.all({
+    @Default(CardBrandAcceptanceFilter.all) CardBrandAcceptanceFilter filter,
+  }) = _CardBrandAcceptanceAll;
+
+  const factory CardBrandAcceptance.allowed({
+    @Default(CardBrandAcceptanceFilter.allowed)
+    CardBrandAcceptanceFilter filter,
+    required List<CardBrandCategory> brands,
+
+    /// List of card brands to accept
+    /// Note: Any card brands that do not map to a CardBrandCategory will be blocked when using an allow list
+  }) = _CardBrandAcceptanceAllowed;
+
+  const factory CardBrandAcceptance.disallowed({
+    @Default(CardBrandAcceptanceFilter.disallowed)
+    CardBrandAcceptanceFilter filter,
+    required List<CardBrandCategory> brands,
+
+    /// List of card brands to block
+    /// Note: Any card brands that do not map to a CardBrandCategory will be accepted when using a disallow list
+  }) = _CardBrandAcceptanceDisallowed;
+
+  factory CardBrandAcceptance.fromJson(Map<String, Object?> json) =>
+      _$CardBrandAcceptanceFromJson(json);
 }

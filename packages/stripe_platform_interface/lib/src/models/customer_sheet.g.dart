@@ -18,6 +18,8 @@ _$CustomerSheetInitParamsImpl _$$CustomerSheetInitParamsImplFromJson(
       customerId: json['customerId'] as String,
       customerEphemeralKeySecret: json['customerEphemeralKeySecret'] as String,
       merchantDisplayName: json['merchantDisplayName'] as String?,
+      allowsRemovalOfLastSavedPaymentMethod:
+          json['allowsRemovalOfLastSavedPaymentMethod'] as bool?,
       headerTextForSelectionScreen:
           json['headerTextForSelectionScreen'] as String?,
       defaultBillingDetails: json['defaultBillingDetails'] == null
@@ -38,6 +40,10 @@ _$CustomerSheetInitParamsImpl _$$CustomerSheetInitParamsImplFromJson(
       preferredNetworks: (json['preferredNetworks'] as List<dynamic>?)
           ?.map((e) => $enumDecode(_$CardBrandEnumMap, e))
           .toList(),
+      cardBrandAcceptance: json['cardBrandAcceptance'] == null
+          ? null
+          : CardBrandAcceptance.fromJson(
+              json['cardBrandAcceptance'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$CustomerSheetInitParamsImplToJson(
@@ -49,6 +55,8 @@ Map<String, dynamic> _$$CustomerSheetInitParamsImplToJson(
       'customerId': instance.customerId,
       'customerEphemeralKeySecret': instance.customerEphemeralKeySecret,
       'merchantDisplayName': instance.merchantDisplayName,
+      'allowsRemovalOfLastSavedPaymentMethod':
+          instance.allowsRemovalOfLastSavedPaymentMethod,
       'headerTextForSelectionScreen': instance.headerTextForSelectionScreen,
       'defaultBillingDetails': instance.defaultBillingDetails?.toJson(),
       'billingDetailsCollectionConfiguration':
@@ -59,6 +67,7 @@ Map<String, dynamic> _$$CustomerSheetInitParamsImplToJson(
       'applePayEnabled': instance.applePayEnabled,
       'googlePayEnabled': instance.googlePayEnabled,
       'preferredNetworks': _cardBrandListToJson(instance.preferredNetworks),
+      'cardBrandAcceptance': instance.cardBrandAcceptance?.toJson(),
     };
 
 const _$ThemeModeEnumMap = {
@@ -86,7 +95,7 @@ _$CustomerSheetPresentParamsImpl _$$CustomerSheetPresentParamsImplFromJson(
           _$CustomerSheetPresentationStyleEnumMap, json['presentationStyle']),
       animationStyle: $enumDecodeNullable(
           _$CustomerSheetAnimationStyleEnumMap, json['animationStyle']),
-      timeout: json['timeout'] as int?,
+      timeout: (json['timeout'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$CustomerSheetPresentParamsImplToJson(

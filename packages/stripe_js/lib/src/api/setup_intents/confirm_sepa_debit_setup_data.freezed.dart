@@ -12,7 +12,7 @@ part of 'confirm_sepa_debit_setup_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ConfirmSepaDebitSetupData _$ConfirmSepaDebitSetupDataFromJson(
     Map<String, dynamic> json) {
@@ -25,8 +25,12 @@ mixin _$ConfirmSepaDebitSetupData {
   @JsonKey(name: "payment_method")
   String? get paymentMethod => throw _privateConstructorUsedError;
 
+  /// Serializes this ConfirmSepaDebitSetupData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ConfirmSepaDebitSetupData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConfirmSepaDebitSetupDataCopyWith<ConfirmSepaDebitSetupData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,6 +55,8 @@ class _$ConfirmSepaDebitSetupDataCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConfirmSepaDebitSetupData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,6 +91,8 @@ class __$$ConfirmCardSetupDataImplCopyWithImpl<$Res>
       $Res Function(_$ConfirmCardSetupDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConfirmSepaDebitSetupData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -119,7 +127,7 @@ class _$ConfirmCardSetupDataImpl implements _ConfirmCardSetupData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConfirmCardSetupDataImpl &&
@@ -127,11 +135,13 @@ class _$ConfirmCardSetupDataImpl implements _ConfirmCardSetupData {
                 other.paymentMethod == paymentMethod));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, paymentMethod);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConfirmSepaDebitSetupData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConfirmCardSetupDataImplCopyWith<_$ConfirmCardSetupDataImpl>
@@ -155,13 +165,15 @@ abstract class _ConfirmCardSetupData implements ConfirmSepaDebitSetupData {
   factory _ConfirmCardSetupData.fromJson(Map<String, dynamic> json) =
       _$ConfirmCardSetupDataImpl.fromJson;
 
-  @override
-
   /// The id of an existing PaymentMethod or an object of collected data.
+  @override
   @JsonKey(name: "payment_method")
   String? get paymentMethod;
+
+  /// Create a copy of ConfirmSepaDebitSetupData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConfirmCardSetupDataImplCopyWith<_$ConfirmCardSetupDataImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -1,7 +1,9 @@
 import 'package:stripe_js/stripe_api.dart';
 import 'package:test/test.dart';
 
-class FakeElement extends Element {}
+extension type FakeElement._(Object o) implements Element {
+  FakeElement() : o = 1;
+}
 
 void main() {
   group('ConfirmIdealPaymentData', () {
@@ -35,7 +37,7 @@ void main() {
       );
     });
 
-    test('with token parses correctly', () {
+    test('with bank parses correctly when bank is not null', () {
       expect(
         ConfirmIdealPaymentData(
           paymentMethod: IdealPaymentMethodDetails.withBank(
@@ -54,6 +56,27 @@ void main() {
         },
       );
     });
+
+    test('with bank parses correctly when bank is null', () {
+      expect(
+        ConfirmIdealPaymentData(
+          paymentMethod: IdealPaymentMethodDetails.withBank(
+            ideal: IdealBankData(bank: null),
+            billingDetails: BillingDetails(name: 'Jenny Rosen'),
+          ),
+        ).toJson(),
+        {
+          "payment_method": {
+            "ideal": {},
+            "type": "ideal",
+            "billing_details": {
+              "name": "Jenny Rosen",
+            },
+          }
+        },
+      );
+    });
+
     test('extra params parse correctly', () {
       expect(
         ConfirmIdealPaymentData(

@@ -41,6 +41,7 @@ class MethodChannelStripe extends StripePlatform {
   final bool _platformIsIos;
   final bool _platformIsAndroid;
   ConfirmHandler? _confirmHandler;
+  FinancialConnectionsEventHandler? _financialConnectionsEventHandler;
 
   @override
   Future<void> initialise({
@@ -71,6 +72,15 @@ class MethodChannelStripe extends StripePlatform {
           method,
           call.arguments['shouldSavePaymentMethod'] as bool,
         );
+      } else if (call.method == 'onFinancialConnectionsEvent' &&
+          _financialConnectionsEventHandler != null) {
+        final event = FinancialConnectionsEvent(
+          name: call.arguments['name'],
+          metadata: FinancialConnectionsEventMetadata.fromJson(
+            call.arguments['metadata'],
+          ),
+        );
+        _financialConnectionsEventHandler!(event);
       }
     });
   }
@@ -424,10 +434,16 @@ class MethodChannelStripe extends StripePlatform {
   }) async {
     bool? isSupported;
     if (params == null) {
-      isSupported =
-          await _methodChannel.invokeMethod('isPlatformPaySupported', {
+      final result =
+          await _methodChannel.invokeMethod<dynamic>('isPlatformPaySupported', {
         'params': {},
       });
+
+      if (result is bool) {
+        isSupported = result;
+      } else {
+        StripeException.fromJson(result);
+      }
     } else {
       isSupported = await _methodChannel
           .invokeMethod('isPlatformPaySupported', {'params': params.toJson()});
@@ -486,10 +502,12 @@ class MethodChannelStripe extends StripePlatform {
   }) async {
     final result = await _methodChannel
         .invokeMapMethod<String, dynamic>('collectBankAccount', {
-      'isPaymentIntent': isPaymentIntent,
+      'intentType': isPaymentIntent,
       'params': params.toJson(),
       'clientSecret': clientSecret,
     });
+
+    _financialConnectionsEventHandler = params.onEvent;
 
     return ResultParser<PaymentIntent>(
             parseJson: (json) => PaymentIntent.fromJson(json))
@@ -534,12 +552,17 @@ class MethodChannelStripe extends StripePlatform {
   }
 
   @override
-  Future<FinancialConnectionTokenResult> collectBankAccountToken(
-      {required String clientSecret}) async {
+  Future<FinancialConnectionTokenResult> collectBankAccountToken({
+    required String clientSecret,
+    CollectBankAccountTokenParams? params,
+  }) async {
     final result = await _methodChannel
         .invokeMapMethod<String, dynamic>('collectBankAccountToken', {
       'clientSecret': clientSecret,
+      'params': params?.toJson(),
     });
+
+    _financialConnectionsEventHandler = params?.onEvent;
 
     if (result!.containsKey('error')) {
       throw ResultParser<void>(parseJson: (json) => {}).parseError(result);
@@ -549,12 +572,18 @@ class MethodChannelStripe extends StripePlatform {
   }
 
   @override
-  Future<FinancialConnectionSessionResult> collectFinancialConnectionsAccounts(
-      {required String clientSecret}) async {
+  Future<FinancialConnectionSessionResult> collectFinancialConnectionsAccounts({
+    required String clientSecret,
+    CollectFinancialConnectionsAccountsParams? params =
+        const CollectFinancialConnectionsAccountsParams(),
+  }) async {
     final result = await _methodChannel.invokeMapMethod<String, dynamic>(
         'collectFinancialConnectionsAccounts', {
       'clientSecret': clientSecret,
+      'params': params?.toJson(),
     });
+
+    _financialConnectionsEventHandler = params?.onEvent;
 
     if (result!.containsKey('error')) {
       throw ResultParser<void>(parseJson: (json) => {}).parseError(result);
@@ -636,24 +665,28 @@ class MethodChannelStripe extends StripePlatform {
   @override
   Future<CanAddCardToWalletResult> canAddCardToWallet(
       CanAddCardToWalletParams params) async {
-    final result = await _methodChannel.invokeMethod('canAddCardToWallet', {
+    final result = await _methodChannel
+        .invokeMapMethod<String, dynamic>('canAddCardToWallet', {
       'params': params.toJson(),
     });
+    if (result!['error'] != null) {
+      throw StripeException.fromJson(result);
+    }
 
-    return ResultParser<CanAddCardToWalletResult>(
-            parseJson: (json) => CanAddCardToWalletResult.fromJson(json))
-        .parse(result: result!, successResultKey: 'canAddCardToWalletResult');
+    return CanAddCardToWalletResult.fromJson(result);
   }
 
   @override
   Future<IsCardInWalletResult> isCardInWallet(String cardLastFour) async {
-    final result = await _methodChannel.invokeMethod('canAddCardToWallet', {
+    final result = await _methodChannel
+        .invokeMapMethod<String, dynamic>('isCardInWallet', {
       'params': {'cardLastFour': cardLastFour},
     });
+    if (result!['error'] != null) {
+      throw StripeException.fromJson(result);
+    }
 
-    return ResultParser<IsCardInWalletResult>(
-            parseJson: (json) => IsCardInWalletResult.fromJson(json))
-        .parse(result: result!, successResultKey: 'canAddCardToWalletResult');
+    return IsCardInWalletResult.fromJson(result);
   }
 }
 

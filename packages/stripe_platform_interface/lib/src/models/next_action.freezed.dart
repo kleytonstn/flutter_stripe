@@ -24,6 +24,8 @@ NextAction _$NextActionFromJson(Map<String, dynamic> json) {
       return _NextActionWeChatRedirect.fromJson(json);
     case 'verifyWithMicrodeposits':
       return _NextActionMicroDeposits.fromJson(json);
+    case 'multibanco':
+      return _NextActionMultiBanco.fromJson(json);
 
     default:
       throw CheckedFromJsonException(
@@ -43,6 +45,7 @@ mixin _$NextAction {
     required TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)
         verifyWithMicroDeposits,
+    required TResult Function(String? voucherURL) multibanco,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +58,7 @@ mixin _$NextAction {
     TResult? Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult? Function(String? voucherURL)? multibanco,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -67,6 +71,7 @@ mixin _$NextAction {
     TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult Function(String? voucherURL)? multibanco,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -78,6 +83,7 @@ mixin _$NextAction {
         wechatPayRedirect,
     required TResult Function(_NextActionMicroDeposits value)
         verifyWithMicroDeposits,
+    required TResult Function(_NextActionMultiBanco value) multibanco,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -86,6 +92,7 @@ mixin _$NextAction {
     TResult? Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult? Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult? Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult? Function(_NextActionMultiBanco value)? multibanco,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -94,9 +101,12 @@ mixin _$NextAction {
     TResult Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult Function(_NextActionMultiBanco value)? multibanco,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this NextAction to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
@@ -116,6 +126,9 @@ class _$NextActionCopyWithImpl<$Res, $Val extends NextAction>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -135,6 +148,8 @@ class __$$NextActionRedirectImplCopyWithImpl<$Res>
       $Res Function(_$NextActionRedirectImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -180,11 +195,13 @@ class _$NextActionRedirectImpl implements _NextActionRedirect {
                 other.redirectUrl == redirectUrl));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, redirectUrl);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NextActionRedirectImplCopyWith<_$NextActionRedirectImpl> get copyWith =>
@@ -202,6 +219,7 @@ class _$NextActionRedirectImpl implements _NextActionRedirect {
     required TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)
         verifyWithMicroDeposits,
+    required TResult Function(String? voucherURL) multibanco,
   }) {
     return redirectToUrl(redirectUrl);
   }
@@ -217,6 +235,7 @@ class _$NextActionRedirectImpl implements _NextActionRedirect {
     TResult? Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult? Function(String? voucherURL)? multibanco,
   }) {
     return redirectToUrl?.call(redirectUrl);
   }
@@ -232,6 +251,7 @@ class _$NextActionRedirectImpl implements _NextActionRedirect {
     TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult Function(String? voucherURL)? multibanco,
     required TResult orElse(),
   }) {
     if (redirectToUrl != null) {
@@ -249,6 +269,7 @@ class _$NextActionRedirectImpl implements _NextActionRedirect {
         wechatPayRedirect,
     required TResult Function(_NextActionMicroDeposits value)
         verifyWithMicroDeposits,
+    required TResult Function(_NextActionMultiBanco value) multibanco,
   }) {
     return redirectToUrl(this);
   }
@@ -260,6 +281,7 @@ class _$NextActionRedirectImpl implements _NextActionRedirect {
     TResult? Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult? Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult? Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult? Function(_NextActionMultiBanco value)? multibanco,
   }) {
     return redirectToUrl?.call(this);
   }
@@ -271,6 +293,7 @@ class _$NextActionRedirectImpl implements _NextActionRedirect {
     TResult Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult Function(_NextActionMultiBanco value)? multibanco,
     required TResult orElse(),
   }) {
     if (redirectToUrl != null) {
@@ -296,7 +319,10 @@ abstract class _NextActionRedirect implements NextAction {
 
   /// Url to redirect to
   String? get redirectUrl;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NextActionRedirectImplCopyWith<_$NextActionRedirectImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -318,6 +344,8 @@ class __$$NextActionOxxoImplCopyWithImpl<$Res>
       _$NextActionOxxoImpl _value, $Res Function(_$NextActionOxxoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -389,12 +417,14 @@ class _$NextActionOxxoImpl implements _NextActionOxxo {
                 other.voucherNumber == voucherNumber));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, expiration, voucherURL, voucherNumber);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NextActionOxxoImplCopyWith<_$NextActionOxxoImpl> get copyWith =>
@@ -412,6 +442,7 @@ class _$NextActionOxxoImpl implements _NextActionOxxo {
     required TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)
         verifyWithMicroDeposits,
+    required TResult Function(String? voucherURL) multibanco,
   }) {
     return displayOxxoDetails(expiration, voucherURL, voucherNumber);
   }
@@ -427,6 +458,7 @@ class _$NextActionOxxoImpl implements _NextActionOxxo {
     TResult? Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult? Function(String? voucherURL)? multibanco,
   }) {
     return displayOxxoDetails?.call(expiration, voucherURL, voucherNumber);
   }
@@ -442,6 +474,7 @@ class _$NextActionOxxoImpl implements _NextActionOxxo {
     TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult Function(String? voucherURL)? multibanco,
     required TResult orElse(),
   }) {
     if (displayOxxoDetails != null) {
@@ -459,6 +492,7 @@ class _$NextActionOxxoImpl implements _NextActionOxxo {
         wechatPayRedirect,
     required TResult Function(_NextActionMicroDeposits value)
         verifyWithMicroDeposits,
+    required TResult Function(_NextActionMultiBanco value) multibanco,
   }) {
     return displayOxxoDetails(this);
   }
@@ -470,6 +504,7 @@ class _$NextActionOxxoImpl implements _NextActionOxxo {
     TResult? Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult? Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult? Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult? Function(_NextActionMultiBanco value)? multibanco,
   }) {
     return displayOxxoDetails?.call(this);
   }
@@ -481,6 +516,7 @@ class _$NextActionOxxoImpl implements _NextActionOxxo {
     TResult Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult Function(_NextActionMultiBanco value)? multibanco,
     required TResult orElse(),
   }) {
     if (displayOxxoDetails != null) {
@@ -514,7 +550,10 @@ abstract class _NextActionOxxo implements NextAction {
 
   /// Oxxo reference number
   String? get voucherNumber;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NextActionOxxoImplCopyWith<_$NextActionOxxoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -538,6 +577,8 @@ class __$$NextActionWeChatRedirectImplCopyWithImpl<$Res>
       $Res Function(_$NextActionWeChatRedirectImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -583,11 +624,13 @@ class _$NextActionWeChatRedirectImpl implements _NextActionWeChatRedirect {
                 other.redirectUrl == redirectUrl));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, redirectUrl);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NextActionWeChatRedirectImplCopyWith<_$NextActionWeChatRedirectImpl>
@@ -605,6 +648,7 @@ class _$NextActionWeChatRedirectImpl implements _NextActionWeChatRedirect {
     required TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)
         verifyWithMicroDeposits,
+    required TResult Function(String? voucherURL) multibanco,
   }) {
     return wechatPayRedirect(redirectUrl);
   }
@@ -620,6 +664,7 @@ class _$NextActionWeChatRedirectImpl implements _NextActionWeChatRedirect {
     TResult? Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult? Function(String? voucherURL)? multibanco,
   }) {
     return wechatPayRedirect?.call(redirectUrl);
   }
@@ -635,6 +680,7 @@ class _$NextActionWeChatRedirectImpl implements _NextActionWeChatRedirect {
     TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult Function(String? voucherURL)? multibanco,
     required TResult orElse(),
   }) {
     if (wechatPayRedirect != null) {
@@ -652,6 +698,7 @@ class _$NextActionWeChatRedirectImpl implements _NextActionWeChatRedirect {
         wechatPayRedirect,
     required TResult Function(_NextActionMicroDeposits value)
         verifyWithMicroDeposits,
+    required TResult Function(_NextActionMultiBanco value) multibanco,
   }) {
     return wechatPayRedirect(this);
   }
@@ -663,6 +710,7 @@ class _$NextActionWeChatRedirectImpl implements _NextActionWeChatRedirect {
     TResult? Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult? Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult? Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult? Function(_NextActionMultiBanco value)? multibanco,
   }) {
     return wechatPayRedirect?.call(this);
   }
@@ -674,6 +722,7 @@ class _$NextActionWeChatRedirectImpl implements _NextActionWeChatRedirect {
     TResult Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult Function(_NextActionMultiBanco value)? multibanco,
     required TResult orElse(),
   }) {
     if (wechatPayRedirect != null) {
@@ -699,7 +748,10 @@ abstract class _NextActionWeChatRedirect implements NextAction {
 
   /// Url to the Qr code.
   String? get redirectUrl;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NextActionWeChatRedirectImplCopyWith<_$NextActionWeChatRedirectImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -724,6 +776,8 @@ class __$$NextActionMicroDepositsImplCopyWithImpl<$Res>
       $Res Function(_$NextActionMicroDepositsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -795,12 +849,14 @@ class _$NextActionMicroDepositsImpl implements _NextActionMicroDeposits {
                 other.microdepositType == microdepositType));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, arrivalDate, redirectUrl, microdepositType);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NextActionMicroDepositsImplCopyWith<_$NextActionMicroDepositsImpl>
@@ -818,6 +874,7 @@ class _$NextActionMicroDepositsImpl implements _NextActionMicroDeposits {
     required TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)
         verifyWithMicroDeposits,
+    required TResult Function(String? voucherURL) multibanco,
   }) {
     return verifyWithMicroDeposits(arrivalDate, redirectUrl, microdepositType);
   }
@@ -833,6 +890,7 @@ class _$NextActionMicroDepositsImpl implements _NextActionMicroDeposits {
     TResult? Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult? Function(String? voucherURL)? multibanco,
   }) {
     return verifyWithMicroDeposits?.call(
         arrivalDate, redirectUrl, microdepositType);
@@ -849,6 +907,7 @@ class _$NextActionMicroDepositsImpl implements _NextActionMicroDeposits {
     TResult Function(
             String? arrivalDate, String? redirectUrl, String? microdepositType)?
         verifyWithMicroDeposits,
+    TResult Function(String? voucherURL)? multibanco,
     required TResult orElse(),
   }) {
     if (verifyWithMicroDeposits != null) {
@@ -867,6 +926,7 @@ class _$NextActionMicroDepositsImpl implements _NextActionMicroDeposits {
         wechatPayRedirect,
     required TResult Function(_NextActionMicroDeposits value)
         verifyWithMicroDeposits,
+    required TResult Function(_NextActionMultiBanco value) multibanco,
   }) {
     return verifyWithMicroDeposits(this);
   }
@@ -878,6 +938,7 @@ class _$NextActionMicroDepositsImpl implements _NextActionMicroDeposits {
     TResult? Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult? Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult? Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult? Function(_NextActionMultiBanco value)? multibanco,
   }) {
     return verifyWithMicroDeposits?.call(this);
   }
@@ -889,6 +950,7 @@ class _$NextActionMicroDepositsImpl implements _NextActionMicroDeposits {
     TResult Function(_NextActionOxxo value)? displayOxxoDetails,
     TResult Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
     TResult Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult Function(_NextActionMultiBanco value)? multibanco,
     required TResult orElse(),
   }) {
     if (verifyWithMicroDeposits != null) {
@@ -922,7 +984,207 @@ abstract class _NextActionMicroDeposits implements NextAction {
 
   /// The type of the microdeposit sent to the customer.
   String? get microdepositType;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NextActionMicroDepositsImplCopyWith<_$NextActionMicroDepositsImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NextActionMultiBancoImplCopyWith<$Res> {
+  factory _$$NextActionMultiBancoImplCopyWith(_$NextActionMultiBancoImpl value,
+          $Res Function(_$NextActionMultiBancoImpl) then) =
+      __$$NextActionMultiBancoImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String? voucherURL});
+}
+
+/// @nodoc
+class __$$NextActionMultiBancoImplCopyWithImpl<$Res>
+    extends _$NextActionCopyWithImpl<$Res, _$NextActionMultiBancoImpl>
+    implements _$$NextActionMultiBancoImplCopyWith<$Res> {
+  __$$NextActionMultiBancoImplCopyWithImpl(_$NextActionMultiBancoImpl _value,
+      $Res Function(_$NextActionMultiBancoImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? voucherURL = freezed,
+  }) {
+    return _then(_$NextActionMultiBancoImpl(
+      voucherURL: freezed == voucherURL
+          ? _value.voucherURL
+          : voucherURL // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true)
+class _$NextActionMultiBancoImpl implements _NextActionMultiBanco {
+  const _$NextActionMultiBancoImpl({this.voucherURL, final String? $type})
+      : $type = $type ?? 'multibanco';
+
+  factory _$NextActionMultiBancoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NextActionMultiBancoImplFromJson(json);
+
+  /// The URL for the hosted multibanco voucher page, which allows customers to view and print an multibanco voucher.
+  @override
+  final String? voucherURL;
+
+  @JsonKey(name: 'type')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'NextAction.multibanco(voucherURL: $voucherURL)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NextActionMultiBancoImpl &&
+            (identical(other.voucherURL, voucherURL) ||
+                other.voucherURL == voucherURL));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, voucherURL);
+
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NextActionMultiBancoImplCopyWith<_$NextActionMultiBancoImpl>
+      get copyWith =>
+          __$$NextActionMultiBancoImplCopyWithImpl<_$NextActionMultiBancoImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? redirectUrl) redirectToUrl,
+    required TResult Function(
+            int? expiration, String? voucherURL, String? voucherNumber)
+        displayOxxoDetails,
+    required TResult Function(String? redirectUrl) wechatPayRedirect,
+    required TResult Function(
+            String? arrivalDate, String? redirectUrl, String? microdepositType)
+        verifyWithMicroDeposits,
+    required TResult Function(String? voucherURL) multibanco,
+  }) {
+    return multibanco(voucherURL);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? redirectUrl)? redirectToUrl,
+    TResult? Function(
+            int? expiration, String? voucherURL, String? voucherNumber)?
+        displayOxxoDetails,
+    TResult? Function(String? redirectUrl)? wechatPayRedirect,
+    TResult? Function(
+            String? arrivalDate, String? redirectUrl, String? microdepositType)?
+        verifyWithMicroDeposits,
+    TResult? Function(String? voucherURL)? multibanco,
+  }) {
+    return multibanco?.call(voucherURL);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? redirectUrl)? redirectToUrl,
+    TResult Function(
+            int? expiration, String? voucherURL, String? voucherNumber)?
+        displayOxxoDetails,
+    TResult Function(String? redirectUrl)? wechatPayRedirect,
+    TResult Function(
+            String? arrivalDate, String? redirectUrl, String? microdepositType)?
+        verifyWithMicroDeposits,
+    TResult Function(String? voucherURL)? multibanco,
+    required TResult orElse(),
+  }) {
+    if (multibanco != null) {
+      return multibanco(voucherURL);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_NextActionRedirect value) redirectToUrl,
+    required TResult Function(_NextActionOxxo value) displayOxxoDetails,
+    required TResult Function(_NextActionWeChatRedirect value)
+        wechatPayRedirect,
+    required TResult Function(_NextActionMicroDeposits value)
+        verifyWithMicroDeposits,
+    required TResult Function(_NextActionMultiBanco value) multibanco,
+  }) {
+    return multibanco(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_NextActionRedirect value)? redirectToUrl,
+    TResult? Function(_NextActionOxxo value)? displayOxxoDetails,
+    TResult? Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
+    TResult? Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult? Function(_NextActionMultiBanco value)? multibanco,
+  }) {
+    return multibanco?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_NextActionRedirect value)? redirectToUrl,
+    TResult Function(_NextActionOxxo value)? displayOxxoDetails,
+    TResult Function(_NextActionWeChatRedirect value)? wechatPayRedirect,
+    TResult Function(_NextActionMicroDeposits value)? verifyWithMicroDeposits,
+    TResult Function(_NextActionMultiBanco value)? multibanco,
+    required TResult orElse(),
+  }) {
+    if (multibanco != null) {
+      return multibanco(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$NextActionMultiBancoImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _NextActionMultiBanco implements NextAction {
+  const factory _NextActionMultiBanco({final String? voucherURL}) =
+      _$NextActionMultiBancoImpl;
+
+  factory _NextActionMultiBanco.fromJson(Map<String, dynamic> json) =
+      _$NextActionMultiBancoImpl.fromJson;
+
+  /// The URL for the hosted multibanco voucher page, which allows customers to view and print an multibanco voucher.
+  String? get voucherURL;
+
+  /// Create a copy of NextAction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NextActionMultiBancoImplCopyWith<_$NextActionMultiBancoImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

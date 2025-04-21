@@ -1,3 +1,58 @@
+## 11.4.0
+
+**Features**
+- Swift package manager support
+- Implemented Address sheet widget
+- Add P24 support on Stripe web
+
+**Fixes**
+- Compliance with latest Dart analyzer
+- Prevent focus loop in Payment element for the web
+
+## 11.3.0
+Align with Stripe React Native [0.39.0](https://github.com/stripe/stripe-react-native/releases/tag/v0.39.0):
+**Features**
+- Adds support for CustomerSession in private beta 1744
+- Added onBehalfOf prop to CardField
+
+**Fixes**
+- Updated stripe-ios to 23.30.*
+- Updated stripe-android to 20.52.*
+
+## 11.2.0
+
+**Features**
+- Add basic support for Expresscheckout on the web
+
+**Fixes** 
+- Export elementappearance and element theme
+
+## 11.1.0
+- Sync with Stripe [0.38.6](https://github.com/stripe/stripe-react-native/releases/tag/v0.38.6). 
+- Minor fixes and improvements.
+
+## 11.0.0
+**Breaking changes**
+- Add support for intentmode setupMode. If you used `IntentMode before` change it to `IntentMode.paymentMode` instead.
+- This library now only supports Dart sdk 3.0.0 for mobile and Dart sdk 3.3.0 for web and higher.
+
+**Features**
+- Sync with Stripe [0.38.3](https://github.com/stripe/stripe-react-native/releases/tag/v0.38.3). 
+
+**Fixes** 
+- #1729 parse unknown error.
+- #1837 fix for deferred payment methods.
+- #1630 handle next action setup for ios.
+
+## 10.2.0
+
+**Features**
+  - Sync with Stripe [0.38.0](https://github.com/stripe/stripe-react-native/releases/tag/v0.38.0):
+    - Adds support for paymentMethodOrder in PaymentSheet, which provides client side sorting of payment methods.
+**Fixes**
+  - Fix: Apply dynamic Stripe account ID to confirmPayment method in WebStripe (#1798)
+  - Update models and bugfixes for flutter_stripe_web
+
 ## 10.1.1
 
 **Fixes**

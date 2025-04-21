@@ -1,6 +1,7 @@
 package com.facebook.react.bridge;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -17,9 +18,13 @@ import java.util.Map;
 /**
  * Created by FFuF, Jonas Bark on 2019-10-02.
  */
-public class ReadableMap extends WritableMap {
+public class ReadableMap extends HashMap<String, Object> implements Map<String, Object> {
 
     private JSONObject map;
+
+    public ReadableMap() {
+        this.map = new JSONObject();
+    }
 
     public ReadableMap(JSONObject map) {
         this.map = map;
@@ -44,7 +49,7 @@ public class ReadableMap extends WritableMap {
 
     public Integer getInt(String key) throws Exception {
         if (map.opt(key) instanceof Double) {
-            throw new Exception("We've got a double here");
+            return (int) getDouble(key);
         }
         return map.getInt(key);
     }
@@ -84,6 +89,8 @@ public class ReadableMap extends WritableMap {
             if (value instanceof Boolean) {
                 return ReadableType.Boolean;
             } else if (value instanceof Iterable) {
+                return ReadableType.Array;
+            } else if (value instanceof JSONArray) {
                 return ReadableType.Array;
             } else if (value instanceof Number) {
                 return ReadableType.Number;
@@ -144,7 +151,7 @@ public class ReadableMap extends WritableMap {
     }
 
     @NotNull
-    public HashMap toHashMap() throws JSONException {
+    public HashMap<String, Object> toHashMap() throws JSONException {
         return toMap(this.map);
     }
 }

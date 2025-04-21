@@ -1,3 +1,46 @@
+## 6.4.0
+
+**Features**
+- Add P24 support on Stripe web
+
+**Fixes**
+- Compliance with latest Dart analyzer
+- Prevent focus loop in Payment element for the web
+
+## 6.3.0
+**Features**
+- Add support for any kind of payment method in setup intent with [confirmSetup]
+
+## 6.2.0
+**Features**
+- Add basic support for Expresscheckout on the web
+
+**Fixes** 
+- Export elementappearance and element theme
+
+## 6.1.0
+- Sync with Stripe [0.38.6](https://github.com/stripe/stripe-react-native/releases/tag/v0.38.6). 
+- Minor fixes and improvements.
+- Fix parameters for webelement
+
+## 6.0.0
+**Breaking changes**
+- Converted the library to the new js interop so this library can be compiled to WASM.
+- This library requires Dart sdk 3.3.0 and higher.
+
+**Features**
+- Payment element add support for Apple pay elements.
+- Payment element add support for payment method order
+
+## 6.0.0
+**Breaking changes**
+- Converted the library to the new js interop so this library can be compiled to WASM.
+- This requires Dart sdk 3.3.0 and higher.
+
+**Features**
+- Payment element add support for Apple pay elements.
+- Payment element add support for payment method order
+
 ## 5.1.0
 
 **Features**
